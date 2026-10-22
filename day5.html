@@ -64,12 +64,14 @@
     @keyframes gradientMove { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
     @keyframes float1 { 0%,100%{transform:translateY(0) translateX(0)} 50%{transform:translateY(-20px) translateX(16px)} }
     @keyframes float2 { 0%,100%{transform:translateY(0) translateX(0)} 50%{transform:translateY(18px) translateX(-10px)} }
+    @keyframes riseIn { from { opacity:0; transform:translateY(18px) scale(0.98); } to { opacity:1; transform:translateY(0) scale(1); } }
 
     .page {
       position: relative;
       z-index: 1;
       width: min(980px, calc(100% - 30px));
       padding: 24px 0;
+      animation: riseIn .7s ease-out both;
     }
 
     .shell {
@@ -149,6 +151,15 @@
 
     .hidden{display:none}
     .fadeIn{opacity:1;transform:none}
+
+    @media (max-width: 560px) {
+      .circle { width: 300px; height: 300px; }
+      .orb { width: 62px; height: 62px; }
+      .aura-wrapper { width: 260px; height: 260px; }
+      .aura { width: 240px; height: 240px; }
+      .magic-wand { height: 150px; }
+      .lock-card { padding: 24px 24px; }
+    }
   </style>
 </head>
 <body>
@@ -305,10 +316,6 @@
     function allowInput(){
       inputAllowed = true;
       levelText.textContent = `Your turn — Repeat the sequence`;
-      let started=false;
-      const startTimeout = setTimeout(()=>{
-        if(!started && inputAllowed){ }
-      }, 900);
     }
 
     function handlePlayerClick(index){
@@ -388,7 +395,6 @@
         p.style.left = (cx + (Math.random()-0.5)*60) + 'px';
         p.style.top = (cy + (Math.random()-0.5)*60) + 'px';
         p.style.opacity = 0.95;
-        p.style.transform = `translate(-50%,-50%)`;
         document.body.appendChild(p);
         const dx = (Math.random()-0.5)*160;
         const dy = (Math.random()-0.7)*-160;
@@ -423,9 +429,7 @@
       playSoundSafe(winSfx, 1.0);
       for(let i=0;i<orbs.length;i++){
         const o = orbs[i];
-        const rect = o.getBoundingClientRect();
-        const dx = (Math.random()-0.5)*40;
-        const anim = o.animate([{transform:'translateY(0px) scale(1)'},{transform:`translateY(-60px) translateX(${dx}px) scale(1.12)`, offset:0.6},{transform:'translateY(-160px) translateX(0px) scale(1)', offset:1}],{duration:900, easing:'ease-out'});
+        const anim = o.animate([{transform:'translateY(0px) scale(1)'},{transform:`translateY(-60px) translateX(${(Math.random()-0.5)*40}px) scale(1.12)`, offset:0.6},{transform:'translateY(-160px) translateX(0px) scale(1)', offset:1}],{duration:900, easing:'ease-out'});
         anim.onfinish = ()=> o.remove();
       }
       setTimeout(()=> {
@@ -531,7 +535,6 @@
       s.style.top = e.clientY + 'px';
       s.style.width = s.style.height = (4 + Math.random()*8) + 'px';
       s.style.opacity = 0.9;
-      s.style.transform = `translate(-50%,-50%)`;
       document.body.appendChild(s);
       s.animate([{opacity:1, transform:'translate(-50%,-50%) scale(1)'},{opacity:0, transform:'translate(-50%,-50%) scale(.4)'}],{duration:700, easing:'cubic-bezier(.2,.8,.3,1)'}).onfinish = ()=> s.remove();
     });

@@ -11,11 +11,11 @@
       --bg3: #f43f5e;
       --bg4: #7c3aed;
       --bg5: #22d3ee;
-      --card: rgba(255,255,255,0.14);
-      --card-border: rgba(255,255,255,0.22);
+      --card: rgba(255,255,255,0.12);
+      --card-border: rgba(255,255,255,0.2);
       --text: #fffafc;
-      --muted: rgba(255,255,255,0.8);
-      --shadow: rgba(33, 13, 63, 0.25);
+      --muted: rgba(255,255,255,0.85);
+      --shadow: rgba(29, 14, 51, 0.24);
     }
 
     * { box-sizing: border-box; }
@@ -38,30 +38,29 @@
       overflow: hidden;
     }
 
-    body::before,
-    body::after {
+    body::before, body::after {
       content: "";
       position: fixed;
-      width: 300px;
-      height: 300px;
+      width: 330px;
+      height: 330px;
       border-radius: 50%;
-      filter: blur(52px);
+      filter: blur(58px);
       opacity: 0.35;
       pointer-events: none;
       z-index: 0;
     }
 
     body::before {
-      background: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.28);
       top: 8%;
-      left: 15%;
+      left: 12%;
       animation: float1 12s ease-in-out infinite;
     }
 
     body::after {
-      background: rgba(255, 110, 180, 0.25);
+      background: rgba(255, 120, 180, 0.26);
       right: 10%;
-      bottom: 12%;
+      bottom: 10%;
       animation: float2 14s ease-in-out infinite;
     }
 
@@ -69,6 +68,7 @@
       position: relative;
       z-index: 1;
       width: min(760px, calc(100% - 28px));
+      animation: riseIn 0.7s ease-out both;
     }
 
     .card {
@@ -194,6 +194,11 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     @keyframes gradientMove {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -211,19 +216,9 @@
     }
 
     @media (max-width: 560px) {
-      .card {
-        padding: 28px 18px 22px;
-      }
-
-      .actions {
-        gap: 12px;
-      }
-
-      .primary-btn,
-      .secondary-btn {
-        width: 100%;
-        min-width: 0;
-      }
+      .card { padding: 28px 18px 22px; }
+      .actions { gap: 12px; }
+      .primary-btn, .secondary-btn { width: 100%; min-width: 0; }
     }
   </style>
 </head>

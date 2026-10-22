@@ -79,11 +79,17 @@
       50% { transform: translateY(18px) translateX(-10px); }
     }
 
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .page {
       position: relative;
       z-index: 1;
       width: min(920px, calc(100% - 28px));
       padding: 26px 0;
+      animation: riseIn 0.7s ease-out both;
     }
 
     .panel {
@@ -280,27 +286,10 @@
     }
 
     @media (max-width: 600px) {
-      .game-container {
-        grid-template-columns: repeat(3, 80px);
-      }
-
-      .card {
-        width: 80px;
-        height: 80px;
-      }
-
-      #nextDayBtn {
-        position: static;
-        margin: 18px auto 0;
-        display: block;
-        transform: none;
-      }
-
-      .lock-message {
-        position: static;
-        transform: none;
-        margin: 14px auto 0;
-      }
+      .game-container { grid-template-columns: repeat(3, 80px); }
+      .card { width: 80px; height: 80px; }
+      #nextDayBtn { position: static; margin: 18px auto 0; display: block; transform: none; }
+      .lock-message { position: static; transform: none; margin: 14px auto 0; }
     }
   </style>
 </head>

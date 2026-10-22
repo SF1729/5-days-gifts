@@ -79,10 +79,21 @@
       50% { transform: translateY(18px) translateX(-12px); }
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(18px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .page {
       position: relative;
       z-index: 1;
       width: min(860px, calc(100% - 28px));
+      animation: riseIn 0.7s ease-out both;
     }
 
     .panel {
@@ -255,29 +266,11 @@
       animation: fadeIn 1s forwards;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.96); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
     @media (max-width: 620px) {
-      .panel {
-        padding: 26px 16px 20px;
-      }
-
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .next-btn {
-        position: static;
-        margin-top: 16px;
-      }
-
-      .lock-message {
-        position: static;
-        margin: 14px auto 0;
-      }
+      .panel { padding: 26px 16px 20px; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .next-btn { position: static; margin-top: 16px; }
+      .lock-message { position: static; margin: 14px auto 0; }
     }
   </style>
 </head>

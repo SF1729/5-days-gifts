@@ -84,11 +84,17 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     .page {
       position: relative;
       z-index: 1;
       width: min(820px, calc(100% - 30px));
       padding: 28px 0;
+      animation: riseIn 0.7s ease-out both;
     }
 
     .card {
@@ -262,18 +268,9 @@
     }
 
     @media (max-width: 500px) {
-      .card {
-        padding: 26px 16px 20px;
-      }
-
-      .puzzle {
-        padding: 18px 12px;
-      }
-
-      .puzzle button {
-        width: 100%;
-        margin: 6px 0;
-      }
+      .card { padding: 26px 16px 20px; }
+      .puzzle { padding: 18px 12px; }
+      .puzzle button { width: 100%; margin: 6px 0; }
     }
   </style>
 </head>
