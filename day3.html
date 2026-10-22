@@ -4,102 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Day 3 | Hidden Messages 💌</title>
-
   <style>
+    :root {
+      --bg1: #f6d365;
+      --bg2: #fda085;
+      --bg3: #f43f5e;
+      --bg4: #7c3aed;
+      --bg5: #22d3ee;
+      --card: rgba(255,255,255,0.12);
+      --card-border: rgba(255,255,255,0.18);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.8);
+      --shadow: rgba(20,8,34,0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 20%, var(--bg3) 50%, var(--bg4) 75%, var(--bg5) 100%);
+      background-size: 200% 200%;
+      animation: gradientMove 15s ease infinite;
+      color: var(--text);
+    }
 
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-     background:linear-gradient(135deg, #f0db1b 10%, #42ffe0 30%, #fe2273 70%, #08d3ea 100%);
-      background-size: 200% 200%;
-      animation: gradientMove 8s ease infinite;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
       overflow: hidden;
+      position: relative;
     }
 
-    h1 {
-      margin-bottom: 20px;
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(54px);
+      opacity: 0.35;
+      pointer-events: none;
     }
 
-    .game {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(5px);
+    body::before {
+      background: rgba(255,255,255,0.26);
+      top: 8%;
+      left: 10%;
+      animation: float1 12s ease-in-out infinite;
     }
 
-    input {
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-      width: 180px;
-      margin-top: 10px;
-      text-align: center;
-      font-size: 16px;
-    }
-
-    button {
-      margin-top: 15px;
-      background: #fff;
-      color: #ff6a00;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(255,255,255,0.6);
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #ff0080;
-      color: #fff;
-      transform: scale(1.1);
-    }
-
-    .grid {
-      display: none;
-      grid-template-columns: repeat(3, 120px);
-      grid-gap: 15px;
-      margin-top: 20px;
-    }
-
-    .box {
-      background: rgba(255,255,255,0.2);
-      border-radius: 12px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
-      backdrop-filter: blur(5px);
-      color: #fff;
-      padding: 8px;
-      text-align: center;
-    }
-
-    .box:hover {
-      background: rgba(255,255,255,0.3);
-      transform: scale(1.05);
-    }
-
-    footer {
-      position: absolute;
-      bottom: 15px;
-      font-size: 0.9rem;
-      opacity: 0.8;
+    body::after {
+      background: rgba(255, 142, 210, 0.25);
+      bottom: 8%;
+      right: 10%;
+      animation: float2 13s ease-in-out infinite;
     }
 
     @keyframes gradientMove {
@@ -108,303 +69,336 @@
       100% { background-position: 0% 50%; }
     }
 
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-20px) translateX(16px); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(18px) translateX(-12px); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(860px, calc(100% - 28px));
+    }
+
+    .panel {
+      background: rgba(32, 18, 50, 0.16);
+      border: 1px solid var(--card-border);
+      border-radius: 32px;
+      padding: 32px 22px 28px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 28px 60px var(--shadow);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.08), transparent 30%, rgba(255,255,255,0.07));
+      pointer-events: none;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+      text-shadow: 0 10px 28px rgba(255,255,255,0.08);
+    }
+
+    h4 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 20px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .game {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 22px;
+      padding: 24px 18px;
+      max-width: 520px;
+      margin: 0 auto;
+      box-shadow: inset 0 1px rgba(255,255,255,0.08);
+    }
+
+    #hint {
+      margin: 0 0 18px;
+      font-size: 1.15rem;
+      line-height: 1.6;
+    }
+
+    input {
+      width: min(100%, 220px);
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      text-align: center;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input::placeholder { color: rgba(255,255,255,0.6); }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .submit-btn {
+      margin-top: 16px;
+      background: linear-gradient(135deg, #ffffff 0%, #ffe8ee 35%, #d9f7ff 100%);
+      color: #4a1e66;
+      padding: 12px 20px;
+      min-width: 160px;
+      box-shadow: 0 16px 30px rgba(255,255,255,0.16);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 30px rgba(27, 11, 40, 0.18);
+    }
+
+    #feedback {
+      margin-top: 14px;
+      min-height: 24px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: none;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 560px;
+      margin: 22px auto 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .box {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      min-height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      padding: 8px;
+      text-align: center;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .box:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .next-btn {
+      position: absolute;
+      right: 22px;
+      bottom: 22px;
+      background: linear-gradient(135deg, #ffffff 0%, #ffe7f8 35%, #d9f7ff 100%);
+      color: #4a1e66;
+      padding: 12px 18px;
+      box-shadow: 0 16px 28px rgba(255,255,255,0.13);
+    }
+
+    .lock-message {
+      position: absolute;
+      right: 22px;
+      bottom: 90px;
+      max-width: 260px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: none;
+      line-height: 1.7;
+      z-index: 2;
+      animation: fadeIn 0.5s ease;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 22px;
+      font-size: 0.9rem;
+      opacity: 0.82;
+      text-align: center;
+    }
+
     .fade-in {
       animation: fadeIn 1s forwards;
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 620px) {
+      .panel {
+        padding: 26px 16px 20px;
       }
 
-      to {
-        opacity: 1;
-        transform: scale(1);
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .next-btn {
+        position: static;
+        margin-top: 16px;
+      }
+
+      .lock-message {
+        position: static;
+        margin: 14px auto 0;
       }
     }
-
-    /* NEXT BUTTON */
-
-    #nextBtn {
-      position: absolute;
-      bottom: 60px;
-      right: 30px;
-      background: #fff;
-      color: #ff6a00;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 15px rgba(255,255,255,0.6);
-      transition: 0.3s;
-    }
-
-    #nextBtn:hover {
-      background: #ff0080;
-      color: #fff;
-      transform: scale(1.1);
-    }
-
-    /* LOCK MESSAGE */
-
-    .lock-message {
-      position: absolute;
-      bottom: 120px;
-      right: 30px;
-      background: rgba(255,255,255,0.2);
-      padding: 12px 18px;
-      border-radius: 12px;
-      backdrop-filter: blur(5px);
-      display: none;
-      animation: fadeIn 0.5s ease;
-      max-width: 260px;
-      font-size: 0.95rem;
-    }
-
   </style>
 </head>
-
 <body>
+  <main class="page">
+    <section class="panel">
+      <h1>Day 3: Hidden Messages for Mistri Jii 💌</h1>
+      <h4>Click to Open</h4>
 
-  <h1>Day 3: Hidden Messages for Mistri Jii 💌</h1>
+      <div class="game" id="gameBox">
+        <p id="hint">I am your ___ forever 👦🏻</p>
+        <input type="text" id="answer" placeholder="Type your answer..." autocomplete="off" />
+        <br>
+        <button class="submit-btn" onclick="checkAnswer()">Submit</button>
+        <p id="feedback"></p>
+      </div>
 
-  <h4>Click to Open</h4>
+      <div class="grid" id="messageGrid">
+        <div class="box" onclick="reveal(this, 0)">💚</div>
+        <div class="box" onclick="reveal(this, 1)">💫</div>
+        <div class="box" onclick="reveal(this, 2)">💝</div>
+        <div class="box" onclick="reveal(this, 3)">💛</div>
+        <div class="box" onclick="reveal(this, 4)">🌟</div>
+        <div class="box" onclick="reveal(this, 5)">⚡</div>
+        <div class="box" onclick="reveal(this, 6)">😎</div>
+        <div class="box" onclick="reveal(this, 7)">🧡</div>
+        <div class="box" onclick="reveal(this, 8)">🌍</div>
+        <div class="box" onclick="reveal(this, 9)">💗</div>
+        <div class="box" onclick="reveal(this, 10)">🥹</div>
+        <div class="box" onclick="reveal(this, 11)">💖</div>
+      </div>
 
-  <div class="game" id="gameBox">
-
-    <p id="hint">
-      I am your ___ forever 👦🏻
-    </p>
-
-    <input
-      type="text"
-      id="answer"
-      placeholder="Type your answer..."
-      autocomplete="off"
-    >
-
-    <br>
-
-    <button onclick="checkAnswer()">
-      Submit
-    </button>
-
-    <p id="feedback"></p>
-
-  </div>
-
-  <div class="grid" id="messageGrid">
-
-    <div class="box" onclick="reveal(this, 0)">💚</div>
-    <div class="box" onclick="reveal(this, 1)">💫</div>
-    <div class="box" onclick="reveal(this, 2)">💝</div>
-    <div class="box" onclick="reveal(this, 3)">💛</div>
-    <div class="box" onclick="reveal(this, 4)">🌟</div>
-    <div class="box" onclick="reveal(this, 5)">⚡</div>
-    <div class="box" onclick="reveal(this, 6)">😎</div>
-    <div class="box" onclick="reveal(this, 7)">🧡</div>
-    <div class="box" onclick="reveal(this, 8)">🌍</div>
-    <div class="box" onclick="reveal(this, 9)">💗</div>
-    <div class="box" onclick="reveal(this, 10)">🥹</div>
-    <div class="box" onclick="reveal(this, 11)">💖</div>
-
-  </div>
-
-  <!-- NEXT BUTTON -->
-
-  <button id="nextBtn" onclick="nextDay()">
-    Go to Day 4 ➜
-  </button>
-
-  <!-- LOCK MESSAGE -->
-
-  <div class="lock-message" id="lockMessage"></div>
-
-  <footer>
-    Created with ❤️ by Shahid 🧸
-  </footer>
+      <button class="next-btn" id="nextBtn" onclick="nextDay()">Go to Day 4 ➜</button>
+      <div class="lock-message" id="lockMessage"></div>
+      <footer>Created with ❤️ by Shahid 🧸</footer>
+    </section>
+  </main>
 
   <script>
-
     const hints = [
-
-      {
-        hint: "I am your ___ forever 👦🏻",
-        answer: "brother"
-      },
-
-      {
-        hint: "You are my ___ forever 🧡",
-        answer: "brother"
-      },
-
-      {
-        hint: "The taunt you passed on me first time ___ 😏",
-        answer: "ladki ki awaaz"
-      },
-
-      {
-        hint: "You are my problem ___ 💗",
-        answer: "solver"
-      },
-
-      {
-        hint: "Our name mix ___ 💝",
-        answer: "shazar"
-      }
-
+      { hint: "I am your ___ forever 👦🏻", answer: "brother" },
+      { hint: "You are my ___ forever 🧡", answer: "brother" },
+      { hint: "The taunt you passed on me first time ___ 😏", answer: "ladki ki awaaz" },
+      { hint: "You are my problem ___ 💗", answer: "solver" },
+      { hint: "Our name mix ___ 💝", answer: "shazar" }
     ];
 
     let current = 0;
-
     let score = 0;
 
     function checkAnswer() {
-
-      const userAnswer =
-        document.getElementById("answer")
-        .value
-        .trim()
-        .toLowerCase();
-
-      const feedback =
-        document.getElementById("feedback");
+      const userAnswer = document.getElementById("answer").value.trim().toLowerCase();
+      const feedback = document.getElementById("feedback");
 
       if (userAnswer === hints[current].answer) {
-
         score++;
-
         feedback.textContent = "Correct! 😸";
-
         feedback.style.color = "#0f0";
 
         setTimeout(() => {
-
           current++;
-
           if (current < hints.length) {
-
-            document.getElementById("hint")
-              .textContent = hints[current].hint;
-
+            document.getElementById("hint").textContent = hints[current].hint;
             document.getElementById("answer").value = "";
-
             feedback.textContent = "";
-
           } else {
-
             startMessages();
-
           }
-
         }, 1000);
-
       } else {
-
         feedback.textContent = "Oops! Try again 🥺";
-
         feedback.style.color = "#ff4444";
       }
     }
 
     function startMessages() {
-
-      document.getElementById("gameBox")
-        .style.display = "none";
-
-      const grid =
-        document.getElementById("messageGrid");
-
+      document.getElementById("gameBox").style.display = "none";
+      const grid = document.getElementById("messageGrid");
       grid.style.display = "grid";
-
       grid.classList.add("fade-in");
     }
 
     const messages = [
-
       "I am your Brother forever 💚",
-
       "You make even silence feel special 💫",
-
       "Your friendship is my favorite gift 💝",
-
       "Khizar, you have the kindest heart 💛",
-
       "Khizar you came in my life to give true value of everything 🌟",
-
       "You’re pure energy wrapped in goodness ⚡",
-
       "You’re a walking good-vibes generator 😎",
-
       "No one can replace you, Khizar 🧡",
-
       "You deserve all the happiness in the world 🌍",
-
       "With you, every moment is memorable 💗",
-
       "You are irreplaceable 🥹",
-
       "Our friendship is like a Touch Me Not plant 💖"
-
     ];
 
     function reveal(box, index) {
-
       box.innerText = messages[index];
-
       box.style.background = "rgba(255,255,255,0.4)";
-
       box.style.color = "#000";
-
       box.style.fontSize = "14px";
     }
 
-    /* =========================
-       DATE LOCK FOR DAY 4
-    ========================= */
-
     function nextDay() {
-
-      // Unlock Date = 27 May 2026
-      const unlockDate =
-        new Date("2026-05-27T00:00:00");
-
+      const unlockDate = new Date("2026-05-27T00:00:00");
       const now = new Date();
-
-      const lockMessage =
-        document.getElementById("lockMessage");
+      const lockMessage = document.getElementById("lockMessage");
 
       if (now >= unlockDate) {
-
-        // Open Day 5
         window.location.href = "day4.html";
-
       } else {
-
-        // Remaining Time
         const diff = unlockDate - now;
-
-        const days =
-          Math.floor(diff / (1000 * 60 * 60 * 24));
-
-        const hours =
-          Math.floor((diff / (1000 * 60 * 60)) % 24);
-
-        const minutes =
-          Math.floor((diff / (1000 * 60)) % 60);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
 
         lockMessage.style.display = "block";
-
-        lockMessage.innerHTML = `
-          🔒 Day 4 is locked 💛 Come Later 😁 <br><br>
-          Unlocks in <b>${days}d ${hours}h ${minutes}m</b>
-        `;
+        lockMessage.innerHTML = `🔒 Day 4 is locked 💛 Come Later 😁 <br><br>Unlocks in <b>${days}d ${hours}h ${minutes}m</b>`;
       }
     }
-
   </script>
-
 </body>
 </html>

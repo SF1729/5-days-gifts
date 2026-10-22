@@ -5,20 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Day 8 - Mini Memory Gallery 💖</title>
   <style>
-    body {
+    :root {
+      --bg1: #f6d365;
+      --bg2: #fda085;
+      --bg3: #f43f5e;
+      --bg4: #7c3aed;
+      --bg5: #22d3ee;
+      --card: rgba(255,255,255,0.12);
+      --card-border: rgba(255,255,255,0.18);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.8);
+      --shadow: rgba(17, 7, 32, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-       background:linear-gradient(135deg, #f0db1b 10%, #42ffe0 30%, #fe2273 70%, #08d3ea 100%);
+      min-height: 100%;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 20%, var(--bg3) 50%, var(--bg4) 75%, var(--bg5) 100%);
       background-size: 200% 200%;
-      animation: gradientMove 8s ease infinite;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      animation: gradientMove 15s ease infinite;
+      color: var(--text);
       overflow: hidden;
-      color: #fff;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
       position: relative;
       text-align: center;
+    }
+
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    body::before {
+      background: rgba(255,255,255,0.24);
+      top: 8%;
+      left: 12%;
+      animation: float1 11s ease-in-out infinite;
+    }
+
+    body::after {
+      background: rgba(255, 126, 196, 0.22);
+      right: 10%;
+      bottom: 10%;
+      animation: float2 12s ease-in-out infinite;
     }
 
     @keyframes gradientMove {
@@ -27,11 +70,59 @@
       100% { background-position: 0% 50%; }
     }
 
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-18px) translateX(16px); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(20px) translateX(-10px); }
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(720px, calc(100% - 28px));
+      padding: 24px 0;
+    }
+
+    .shell {
+      background: rgba(31, 18, 50, 0.16);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      box-shadow: 0 28px 60px var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 24px 18px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.08), transparent 28%, rgba(255,255,255,0.06));
+      pointer-events: none;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 22px;
+      font-size: clamp(1.5rem, 3vw, 2.3rem);
+      line-height: 1.5;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.12);
+    }
+
     .gallery-container {
+      position: relative;
+      z-index: 1;
       perspective: 1000px;
       width: 300px;
       height: 400px;
-      position: relative;
+      margin: 0 auto;
     }
 
     .photo-card {
@@ -51,9 +142,10 @@
       position: absolute;
       width: 100%;
       height: 100%;
-      border-radius: 15px;
+      border-radius: 18px;
       backface-visibility: hidden;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 16px 28px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.12);
     }
 
     .front {
@@ -62,16 +154,16 @@
     }
 
     .back {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.12);
       backdrop-filter: blur(8px);
       color: #fff;
-      text-align: center;
       transform: rotateY(180deg);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 20px;
+      text-align: center;
     }
 
     .back h2 {
@@ -81,68 +173,72 @@
 
     .back p {
       font-size: 1em;
-      line-height: 1.4em;
+      line-height: 1.5em;
+      color: rgba(255,255,255,0.95);
     }
 
     .next-btn {
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      background:#fff;
-      color: #8e2de2;
+      background: linear-gradient(135deg, #ffffff 0%, #ffe7f8 35%, #d9f7ff 100%);
+      color: #4a1e66;
       border: none;
       padding: 10px 20px;
       border-radius: 25px;
       font-size: 1em;
       cursor: pointer;
-      transition: 0.3s;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-weight: 800;
+      box-shadow: 0 18px 28px rgba(255,255,255,0.14);
     }
 
     .next-btn:hover {
-       background: #ff0080;
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 20px 35px rgba(19,5,33,0.2);
     }
 
     #photo-next { bottom: -60px; }
-    #day9-next {
-      bottom: -110px;
-      display: none; /* hidden initially */
-    }
+    #day9-next { bottom: -110px; display: none; }
 
-    h1 {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      font-size: 1.6em;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      user-select: none;
+    @media (max-width: 520px) {
+      .gallery-container {
+        width: min(280px, calc(100vw - 60px));
+        height: 380px;
+      }
+      #photo-next { bottom: -52px; }
+      #day9-next { bottom: -102px; }
     }
   </style>
 </head>
 <body>
+  <main class="page">
+    <section class="shell">
+      <h1>💞 Mini Photo & Message Gallery 💞<br> Click the photo to flip it 💫 <br> After flipping, click Next</h1>
 
- <h1>💞 Mini Photo & Message Gallery 💞<br> Click the photo to flip it 💫 <br> After fliping then click on Next</h1>
-
-  <div class="gallery-container">
-    <div class="photo-card" id="photoCard">
-      <div class="front" id="frontPhoto"></div>
-      <div class="back" id="backText">
-        <h2>Message 1</h2>
-        <p>Bus hamesha aaise hi haste rhna kabhi bhi mayuuss mat hona cahe kuch bhi ho jai , Promise kafr hamesha aaisa hi rhge 🤞🏼</p>
+      <div class="gallery-container">
+        <div class="photo-card" id="photoCard">
+          <div class="front" id="frontPhoto"></div>
+          <div class="back" id="backText">
+            <h2>Message 1</h2>
+            <p>Bus hamesha aaise hi haste rhna kabhi bhi mayuuss mat hona cahe kuch bhi ho jai , Promise kafr hamesha aaisa hi rhge 🤞🏼</p>
+          </div>
+        </div>
+        <button class="next-btn" id="photo-next" onclick="nextPhoto()">Next ➜</button>
+        <button class="next-btn" id="day9-next" onclick="goToDay9()">Go to Day 9 ➜</button>
       </div>
-    </div>
-    <button class="next-btn" id="photo-next" onclick="nextPhoto()">Next ➜</button>
-    <button class="next-btn" id="day9-next" onclick="goToDay9()">Go to Day 9 ➜</button>
-  </div>
+    </section>
+  </main>
 
   <script>
     const photos = [
       { img: 'im6.jpg', text: 'Bus hamesha aaise hi haste rhna kabhi bhi mayuuss mat hona cahe kuch bhi ho jai , Promise kar hamesha aaisa hi rhge 🤞🏼 ' },
-      { img: 'im1.jpg', text: ' Ha to mere mini versions agar hue to teri shaadi tak to wo aaise hi rhege tera sar khane mere jaisa 😂😁' },
+      { img: 'im1.jpg', text: 'Ha to mere mini versions agar hue to teri shaadi tak to wo aaise hi rhege tera sar khane mere jaisa 😂😁' },
       { img: 'im2.jpg', text: 'Dekh ghussa mat hona par ek baat btani thi ki agar future me mai nhi rha or mere bacche rahe to kya tu unka Buddy Uncle banega ?' },
       { img: 'im3.jpg', text: 'Ha to Life me kabhi na kabhi tere mini versions bhi aaige to wo aaise hi rhege to mai banuga unka buddy uncle or teri band bajaige milkar hum 😏😁' },
       { img: 'im5.jpg', text: 'Ha to Life me kabhi na kabhi tere mini versions aaige hi to unko batana ki unka buddy uncle thoda sa pagal toda sa crazy hai par unko bahut pyaar karta hai 💗' },
-    { img: 'im4.jpg', text: 'Ha to yeh mera best moment tha , Like matlab ke mujhe accha laga tha bhot accha ke tune mere liye kuch laya tha dhund kar ! Thank You 😊' },
-     {img: 'im7.jpg', text: 'To haa life me hum kahi bhi rhe kuch bhi kare par koshih karege ke ek dusre ko bhule na haa mai to nhi bhuluga 😅, kyu ke aap bhulne wali chizz nhi ho... aap ka pta nhi 😏' },
+      { img: 'im4.jpg', text: 'Ha to yeh mera best moment tha , Like matlab ke mujhe accha laga tha bhot accha ke tune mere liye kuch laya tha dhund kar ! Thank You 😊' },
+      { img: 'im7.jpg', text: 'To haa life me hum kahi bhi rhe kuch bhi kare par koshih karege ke ek dusre ko bhule na haa mai to nhi bhuluga 😅, kyu ke aap bhulne wali chizz nhi ho... aap ka pta...' }
     ];
 
     let current = 0;
@@ -153,20 +249,17 @@
     const nextBtn = document.getElementById('photo-next');
     const day9Btn = document.getElementById('day9-next');
 
-    // Initialize first photo
     front.style.backgroundImage = `url(${photos[0].img})`;
     back.textContent = photos[0].text;
 
-    // Flip effect
     card.addEventListener('click', () => {
       card.classList.toggle('flip');
     });
 
-    // Go to next photo
     function nextPhoto() {
       card.classList.remove('flip');
       current++;
-      
+
       if (current < photos.length) {
         setTimeout(() => {
           front.style.backgroundImage = `url(${photos[current].img})`;
@@ -175,23 +268,19 @@
         }, 500);
       }
 
-      // when last photo is reached
       if (current === photos.length - 1) {
         nextBtn.textContent = "Last Message 💖";
       }
 
-      // when all photos are done
       if (current === photos.length) {
         nextBtn.style.display = "none";
         day9Btn.style.display = "block";
       }
     }
 
-    // Go to next day
     function goToDay9() {
       window.location.href = "day9.html";
     }
   </script>
-
 </body>
 </html>

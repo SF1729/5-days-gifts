@@ -1,358 +1,462 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day 4 | Fun Quiz About Us 🎮</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background:linear-gradient(135deg, #f0db1b 10%, #42ffe0 30%, #fe2273 70%, #08d3ea 100%);
-    background-size: 200% 200%;
-    animation: gradientMove 8s ease infinite;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    color: #fff;
-    text-align: center;
-    overflow: hidden;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 4 | Fun Quiz About Us 🎮</title>
+  <style>
+    :root {
+      --bg1: #f6d365;
+      --bg2: #fda085;
+      --bg3: #f43f5e;
+      --bg4: #7c3aed;
+      --bg5: #22d3ee;
+      --card: rgba(255,255,255,0.12);
+      --card-border: rgba(255,255,255,0.18);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.8);
+      --shadow: rgba(20, 12, 40, 0.25);
+    }
 
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
+    * { box-sizing: border-box; }
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    text-shadow: 0 0 20px #fff;
-  }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 20%, var(--bg3) 50%, var(--bg4) 75%, var(--bg5) 100%);
+      background-size: 200% 200%;
+      animation: gradientMove 15s ease infinite;
+      color: var(--text);
+    }
 
-  .game-container {
-    display: grid;
-    grid-template-columns: repeat(4, 80px);
-    grid-gap: 12px;
-    margin-top: 20px;
-  }
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-  .card {
-    width: 80px;
-    height: 80px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    cursor: pointer;
-    transition: transform 0.4s, background 0.3s;
-  }
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
 
-  .card.flipped {
-    background: #fff;
-    color: #ff0080;
-    transform: rotateY(180deg);
-  }
+    body::before {
+      background: rgba(255,255,255,0.25);
+      top: 8%;
+      left: 10%;
+      animation: float1 11s ease-in-out infinite;
+    }
 
-  #message {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
+    body::after {
+      background: rgba(255, 126, 192, 0.24);
+      right: 8%;
+      bottom: 10%;
+      animation: float2 13s ease-in-out infinite;
+    }
 
-  #quiz-section {
-    display: none;
-  }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-  .quiz-container {
-    background: rgba(255,255,255,0.15);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 0 25px rgba(255,255,255,0.3);
-    width: 90%;
-    max-width: 500px;
-    margin-top: 20px;
-    backdrop-filter: blur(6px);
-  }
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-18px) translateX(18px); }
+    }
 
-  .question { font-size: 1.2rem; margin-bottom: 20px; }
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(18px) translateX(-10px); }
+    }
 
-  .options button {
-    display: block;
-    width: 100%;
-    background: #fff;
-    color: #8e2de2;
-    border: none;
-    border-radius: 8px;
-    margin: 8px 0;
-    padding: 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-  }
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(920px, calc(100% - 28px));
+      padding: 26px 0;
+    }
 
-  .options button:hover {
-    background: #ff0080;
-    color: #fff;
-    transform: scale(1.05);
-  }
+    .panel {
+      background: rgba(30, 18, 50, 0.16);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      padding: 26px 18px 24px;
+      box-shadow: 0 28px 62px var(--shadow);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      position: relative;
+      overflow: hidden;
+    }
 
-  #result {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.07), transparent 28%, rgba(255,255,255,0.06));
+      pointer-events: none;
+    }
 
-  button#next {
-    margin-top: 15px;
-    background: #fff;
-    color: #8e2de2;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-  }
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 8px 0 18px;
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+      text-shadow: 0 10px 30px rgba(255,255,255,0.1);
+    }
 
-  button#next:hover {
-    background: #ff0080;
-    color: #fff;
-  }
+    #memory-game {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
 
-  /* Always visible next-day button styling */
-  #nextDayBtn {
-    position: absolute;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: inline-block;
-    background: #fff;
-    color: #8e2de2;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    opacity: 0.9;
-    transition: all 0.3s ease;
-  }
+    .game-container {
+      display: grid;
+      grid-template-columns: repeat(4, 90px);
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
 
-  #nextDayBtn:hover {
-    background: #ff0080;
-    color: #fff;
-    transform: translateX(-50%) scale(1.05);
-  }
+    .card {
+      width: 90px;
+      height: 90px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.4s ease, background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: inset 0 1px rgba(255,255,255,0.06);
+    }
 
-  footer {
-    position: absolute;
-    bottom: 10px;
-    font-size: 0.9rem;
-    opacity: 0.8;
-  }
+    .card:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.14);
+    }
 
-  /* ADD THIS CSS inside your existing <style> section */
-  .lock-message {
-    position: absolute;
-    bottom: 140px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.2);
-    padding: 12px 18px;
-    border-radius: 12px;
-    backdrop-filter: blur(5px);
-    display: none;
-    animation: fadeIn 0.5s ease;
-    max-width: 320px;
-    font-size: 0.95rem;
-  }
-</style>
-</head>
-<body>
+    .card.flipped {
+      background: linear-gradient(135deg, #fff 0%, #fce7f3 35%, #dcf4ff 100%);
+      color: #ff0080;
+      transform: rotateY(180deg);
+      box-shadow: 0 18px 28px rgba(255,255,255,0.18);
+    }
 
-<h1>💞 Memory Match to Unlock Quiz 💞</h1>
+    #message {
+      margin-top: 18px;
+      min-height: 28px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
 
-<div id="memory-game">
-  <div class="game-container" id="game-board"></div>
-  <div id="message"></div>
-</div>
+    #quiz-section {
+      display: none;
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+    }
 
-<!-- Hidden quiz section -->
-<div id="quiz-section">
-  <h1>Day 4: Fun Quiz About Us 🧡</h1>
-  <div class="quiz-container">
-    <div id="quiz">
-      <div class="question" id="question">Loading question...</div>
-      <div class="options" id="options"></div>
-      <div id="result"></div>
-      <button id="next" onclick="nextQuestion()">Next ➜</button>
-    </div>
-  </div>
-</div>
+    .quiz-container {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 22px;
+      padding: 22px 18px 18px;
+      max-width: 560px;
+      margin: 0 auto;
+      box-shadow: inset 0 1px rgba(255,255,255,0.08);
+    }
 
-<!-- Always visible Next Day Button -->
-<button id="nextDayBtn" onclick="nextDay()">Go to Day 5 ➜</button>
-<div class="lock-message" id="lockMessage"></div>
+    #question {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
 
-<footer>Made with ❤️ by Shahid 🧡</footer>
+    .options {
+      display: grid;
+      gap: 10px;
+    }
 
-<script>
-  // 💖 MEMORY GAME SETUP
-  const emojis = ['💚', '😏', '💗', '🧡', '💣', '✨'];
-  let cards = [...emojis, ...emojis];
-  cards.sort(() => Math.random() - 0.5);
-  const board = document.getElementById('game-board');
-  let firstCard = null;
-  let lockBoard = false;
-  let matchedPairs = 0;
+    .options button {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.98rem;
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
 
-  cards.forEach(emoji => {
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.dataset.value = emoji;
-    card.onclick = () => flipCard(card);
-    board.appendChild(card);
-  });
+    .options button:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.16);
+    }
 
-  function flipCard(card) {
-    if (lockBoard || card.classList.contains('flipped')) return;
-    card.classList.add('flipped');
-    card.textContent = card.dataset.value;
+    #result {
+      margin-top: 16px;
+      min-height: 28px;
+      font-weight: 700;
+    }
 
-    if (!firstCard) {
-      firstCard = card;
-    } else {
-      lockBoard = true;
-      if (card.dataset.value === firstCard.dataset.value) {
-        matchedPairs++;
-        firstCard = null;
-        lockBoard = false;
-        if (matchedPairs === emojis.length) {
-          document.getElementById('message').innerHTML = 
-            "🎉 Yay Mistri Jii! You matched all pairs! Quiz unlocked 🎮💞";
-          setTimeout(() => {
-            document.getElementById('memory-game').style.display = 'none';
-            document.getElementById('quiz-section').style.display = 'block';
-          }, 2000);
-        }
-      } else {
-        setTimeout(() => {
-          card.classList.remove('flipped');
-          card.textContent = '';
-          firstCard.classList.remove('flipped');
-          firstCard.textContent = '';
-          firstCard = null;
-          lockBoard = false;
-        }, 800);
+    #next {
+      margin-top: 16px;
+      display: none;
+      background: linear-gradient(135deg, #ffffff 0%, #ffe7f8 35%, #d9f7ff 100%);
+      color: #4a1e66;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    #nextDayBtn {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ffffff 0%, #ffe7f8 35%, #d9f7ff 100%);
+      color: #4a1e66;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 18px 28px rgba(255,255,255,0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #nextDayBtn:hover {
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 22px 34px rgba(19, 5, 33, 0.2);
+    }
+
+    .lock-message {
+      position: absolute;
+      left: 50%;
+      bottom: 90px;
+      transform: translateX(-50%);
+      max-width: 320px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: none;
+      line-height: 1.7;
+      z-index: 2;
+      animation: fadeIn 0.5s ease;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.82;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .game-container {
+        grid-template-columns: repeat(3, 80px);
+      }
+
+      .card {
+        width: 80px;
+        height: 80px;
+      }
+
+      #nextDayBtn {
+        position: static;
+        margin: 18px auto 0;
+        display: block;
+        transform: none;
+      }
+
+      .lock-message {
+        position: static;
+        transform: none;
+        margin: 14px auto 0;
       }
     }
-  }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="panel">
+      <h1>💞 Memory Match to Unlock Quiz 💞</h1>
 
-  // 🎮 QUIZ SECTION
-  const quizData = [
-    { question: "Who always forgets things first? 😅", options: ["Khizar💚", "Shahid🧡", "Both 😝", "None"], answer: "Shahid🧡"},
-    { question: "What’s our favorite thing to do together?", options: ["Laugh endlessly 😂", "Talk about random stuff", "Eat Food Together", "Support Each Other ", "All of these 💛"], answer: "All of these 💛" },
-    { question: "Who gives the best advice?", options: ["Khizar💚", "Shahid🧡", "Someone Else", "No one"], answer: "Khizar💚" },
-    { question: "What’s Khizar’s secret superpower?", options: ["Making me smile 😊", "Eating fast 🍕", "Vanishing suddenly 🕵️", "Supporting me anytime when I need  ✨"], answer: "Supporting me anytime when I need  ✨"},
-    { question: "If you could describe Shahid , it would be...?", options: ["Amazing", "Supportive", "Kind-hearted", "All of the above 💖"], answer: "All of the above 💖"},
-    { question: "Do we need some changes in our friendship?", options: ["Yes", "No", "Maybe", "Forever Friends"], answer: "Forever Friends" },
-    { question: "What we have is...", options: ["Just friendship 🧑‍🤝‍🧑", "Bhai Chara 💞", "Temporary", "Ordinary"], answer: "Bhai Chara 💞" },
-    { question: "What’s the best thing about our friendship?", options: ["We understand each other", "We have fun together", "We support each other", "All of these 💛"], answer: "All of these 💛" },
-    { question: "What’s our friendship level on a scale of 10 to 100?", options: ["50", "70", "90", " 💯"], answer: " 💯" },
-    { question: "What do you value most in our friendship?", options: ["Trust", "Laughter", "Support", "All of the above 💖"], answer: "All of the above 💖" },
-    { question: "What’s one thing you’d like to do together in the future?", options: ["Travel the world 🌍", "Always trust each other 💗", "Create memories 📸", "All of these 💛"], answer: "All of these 💛" },
-    { question: "If I  die because of some reason, what you will do?", options: ["Cry", "Remember me forever 🧡", "Move on", "Celebrate because your problem is gone 🎉"], answer: "Remember me forever 🧡"},
-    { question: "If I Died someday, can you be my children's Buddy Uncle?", options: ["I think about it", "Of Course ", "Maybe", "No"], answer: "Of Course "},
-  ];
+      <div id="memory-game">
+        <div class="game-container" id="game-board"></div>
+        <div id="message"></div>
+      </div>
 
+      <div id="quiz-section">
+        <h1>Day 4: Fun Quiz About Us 🧡</h1>
+        <div class="quiz-container">
+          <div id="quiz">
+            <div id="question">Loading question...</div>
+            <div class="options" id="options"></div>
+            <div id="result"></div>
+            <button id="next" onclick="nextQuestion()">Next ➜</button>
+          </div>
+        </div>
+      </div>
 
-  let current = 0;
-  let score = 0;
-  const questionEl = document.getElementById("question");
-  const optionsEl = document.getElementById("options");
-  const resultEl = document.getElementById("result");
-  const nextBtn = document.getElementById("next");
+      <button id="nextDayBtn" onclick="nextDay()">Go to Day 5 ➜</button>
+      <div class="lock-message" id="lockMessage"></div>
+      <footer>Made with ❤️ by Shahid 🧡</footer>
+    </section>
+  </main>
 
-  function loadQuestion() {
-    resultEl.textContent = "";
-    nextBtn.style.display = "none";
-    const q = quizData[current];
-    questionEl.textContent = q.question;
-    optionsEl.innerHTML = "";
-    q.options.forEach(opt => {
-      const btn = document.createElement("button");
-      btn.textContent = opt;
-      btn.onclick = () => checkAnswer(opt);
-      optionsEl.appendChild(btn);
+  <script>
+    const emojis = ['💚', '😏', '💗', '🧡', '💣', '✨'];
+    let cards = [...emojis, ...emojis];
+    cards.sort(() => Math.random() - 0.5);
+    const board = document.getElementById('game-board');
+    let firstCard = null;
+    let lockBoard = false;
+    let matchedPairs = 0;
+
+    cards.forEach(emoji => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.value = emoji;
+      card.onclick = () => flipCard(card);
+      board.appendChild(card);
     });
-  }
 
-  function checkAnswer(selected) {
-    const correct = quizData[current].answer;
-    if (selected === correct) {
-      resultEl.textContent = "✅ Correct!";
-      score++;
-    } else {
-      resultEl.textContent = "❌ Oops! It was: " + correct;
+    function flipCard(card) {
+      if (lockBoard || card.classList.contains('flipped')) return;
+      card.classList.add('flipped');
+      card.textContent = card.dataset.value;
+
+      if (!firstCard) {
+        firstCard = card;
+      } else {
+        lockBoard = true;
+        if (card.dataset.value === firstCard.dataset.value) {
+          matchedPairs++;
+          firstCard = null;
+          lockBoard = false;
+          if (matchedPairs === emojis.length) {
+            document.getElementById('message').innerHTML = "🎉 Yay Mistri Jii! You matched all pairs! Quiz unlocked 🎮💞";
+            setTimeout(() => {
+              document.getElementById('memory-game').style.display = 'none';
+              document.getElementById('quiz-section').style.display = 'block';
+            }, 2000);
+          }
+        } else {
+          setTimeout(() => {
+            card.classList.remove('flipped');
+            card.textContent = '';
+            firstCard.classList.remove('flipped');
+            firstCard.textContent = '';
+            firstCard = null;
+            lockBoard = false;
+          }, 800);
+        }
+      }
     }
-    Array.from(optionsEl.children).forEach(btn => btn.disabled = true);
-    if (current < quizData.length - 1) {
-      nextBtn.style.display = "inline-block";
+
+    const quizData = [
+      { question: "Who always forgets things first? 😅", options: ["Khizar💚", "Shahid🧡", "Both 😝", "None"], answer: "Shahid🧡" },
+      { question: "What’s our favorite thing to do together?", options: ["Laugh endlessly 😂", "Talk about random stuff", "Eat Food Together", "Support Each Other ", "All of these 💛"], answer: "All of these 💛" },
+      { question: "Who gives the best advice?", options: ["Khizar💚", "Shahid🧡", "Someone Else", "No one"], answer: "Khizar💚" },
+      { question: "What’s Khizar’s secret superpower?", options: ["Making me smile 😊", "Eating fast 🍕", "Vanishing suddenly 🕵️", "Supporting me anytime when I need ✨"], answer: "Supporting me anytime when I need ✨" },
+      { question: "If you could describe Shahid, it would be...?", options: ["Amazing", "Supportive", "Kind-hearted", "All of the above 💖"], answer: "All of the above 💖" },
+      { question: "Do we need some changes in our friendship?", options: ["Yes", "No", "Maybe", "Forever Friends"], answer: "Forever Friends" },
+      { question: "What we have is...", options: ["Just friendship 🧑‍🤝‍🧑", "Bhai Chara 💞", "Temporary", "Ordinary"], answer: "Bhai Chara 💞" },
+      { question: "What’s the best thing about our friendship?", options: ["We understand each other", "We have fun together", "We support each other", "All of these 💛"], answer: "All of these 💛" },
+      { question: "What’s our friendship level on a scale of 10 to 100?", options: ["50", "70", "90", " 💯"], answer: " 💯" },
+      { question: "What do you value most in our friendship?", options: ["Trust", "Laughter", "Support", "All of the above 💖"], answer: "All of the above 💖" },
+      { question: "What’s one thing you’d like to do together in the future?", options: ["Travel the world 🌍", "Always trust each other 💗", "Create memories 📸", "All of these 💛"], answer: "All of these 💛" },
+      { question: "If I die because of some reason, what you will do?", options: ["Cry", "Remember me forever 🧡", "Move on", "Celebrate because your problem is gone 🎉"], answer: "Remember me forever 🧡" },
+      { question: "If I die someday, can you be my children's Buddy Uncle?", options: ["I think about it", "Of Course ", "Maybe", "No"], answer: "Of Course " }
+    ];
+
+    let current = 0;
+    let score = 0;
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const resultEl = document.getElementById("result");
+    const nextBtn = document.getElementById("next");
+
+    function loadQuestion() {
+      resultEl.textContent = "";
+      nextBtn.style.display = "none";
+      const q = quizData[current];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt);
+        optionsEl.appendChild(btn);
+      });
     }
-  }
 
-  function nextQuestion() {
-    current++;
-    if (current < quizData.length) loadQuestion();
-  }
+    function checkAnswer(selected) {
+      const correct = quizData[current].answer;
+      if (selected === correct) {
+        resultEl.textContent = "✅ Correct!";
+        score++;
+      } else {
+        resultEl.textContent = "❌ Oops! It was: " + correct;
+      }
+      Array.from(optionsEl.children).forEach(btn => btn.disabled = true);
+      if (current < quizData.length - 1) {
+        nextBtn.style.display = "inline-block";
+      }
+    }
 
-  <!-- REPLACE YOUR CURRENT nextDay() FUNCTION WITH THIS -->
+    function nextQuestion() {
+      current++;
+      if (current < quizData.length) loadQuestion();
+    }
 
-function nextDay() {
+    function nextDay() {
+      const unlockDate = new Date("2026-05-28T00:00:00");
+      const now = new Date();
+      const lockMessage = document.getElementById("lockMessage");
 
-  // Unlock Date = 28 May 2026
-  const unlockDate =
-    new Date("2026-05-28T00:00:00");
+      if (now >= unlockDate) {
+        window.location.href = "day5.html";
+      } else {
+        const diff = unlockDate - now;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
 
-  const now = new Date();
+        lockMessage.style.display = "block";
+        lockMessage.innerHTML = `🔒 Day 5 is locked ! Stay with us 😏 <br><br>Unlocks in <b>${days}d ${hours}h ${minutes}m</b>`;
+      }
+    }
 
-  const lockMessage =
-    document.getElementById("lockMessage");
-
-  if (now >= unlockDate) {
-
-    // Open Day 5
-    window.location.href = "day9.html";
-
-  } else {
-
-    // Remaining Time
-    const diff = unlockDate - now;
-
-    const days =
-      Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    const hours =
-      Math.floor((diff / (1000 * 60 * 60)) % 24);
-
-    const minutes =
-      Math.floor((diff / (1000 * 60)) % 60);
-
-    lockMessage.style.display = "block";
-
-    lockMessage.innerHTML = `
-      🔒 Day 5 is locked ! Stay with us 😏 <br><br>
-      Unlocks in <b>${days}d ${hours}h ${minutes}m</b>
-    `;
-  }
-}
-
-  loadQuestion();
-</script>
+    loadQuestion();
+  </script>
 </body>
 </html>

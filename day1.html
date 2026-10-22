@@ -4,87 +4,194 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Day 1 | Compliment Generator 💬</title>
-
   <style>
-    body {
+    :root {
+      --bg1: #f6d365;
+      --bg2: #fda085;
+      --bg3: #f43f5e;
+      --bg4: #7c3aed;
+      --bg5: #22d3ee;
+      --card: rgba(255,255,255,0.14);
+      --card-border: rgba(255,255,255,0.22);
+      --text: #fffafc;
+      --muted: rgba(255,255,255,0.8);
+      --shadow: rgba(33, 13, 63, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
       margin: 0;
-      background:linear-gradient(135deg, #f0db1b 10%, #42ffe0 30%, #fe2273 70%, #08d3ea 100%);
+      min-height: 100%;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 20%, var(--bg3) 50%, var(--bg4) 75%, var(--bg5) 100%);
       background-size: 200% 200%;
-      animation: gradientMove 8s ease infinite;
-      font-family: 'Poppins', monospace;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
+      animation: gradientMove 15s ease infinite;
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
       overflow: hidden;
     }
 
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(52px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background: rgba(255,255,255,0.25);
+      top: 8%;
+      left: 15%;
+      animation: float1 12s ease-in-out infinite;
+    }
+
+    body::after {
+      background: rgba(255, 110, 180, 0.25);
+      right: 10%;
+      bottom: 12%;
+      animation: float2 14s ease-in-out infinite;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(760px, calc(100% - 28px));
+    }
+
+    .card {
+      background: rgba(30, 18, 50, 0.16);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      padding: 34px 28px 26px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 26px 60px var(--shadow);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(125deg, rgba(255,255,255,0.12), transparent 25%, rgba(255,255,255,0.08));
+      pointer-events: none;
+    }
+
     h1 {
-      font-size: 2rem;
-      text-shadow: 0 0 20px rgba(255,255,255,0.8);
-      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+      margin: 0 0 18px;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: -0.05em;
+      text-shadow: 0 10px 28px rgba(255,255,255,0.12);
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 1.08rem;
     }
 
     #compliment {
-      font-size: 1.3rem;
-      margin: 20px 0;
-      min-height: 60px;
-      width: 80%;
-      max-width: 650px;
+      position: relative;
+      z-index: 1;
+      margin: 0 auto 22px;
+      min-height: 84px;
+      width: min(100%, 620px);
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
       line-height: 1.6;
+      font-size: clamp(1.1rem, 2.6vw, 1.45rem);
+      color: #fff;
       opacity: 0;
       animation: fadeIn 1s forwards;
+      box-shadow: inset 0 1px rgba(255,255,255,0.06);
+    }
+
+    .actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
     }
 
     button {
-      background: #fff;
-      color: #8e2de2;
+      appearance: none;
       border: none;
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-weight: bold;
+      border-radius: 16px;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(255,255,255,0.6);
-      transition: 0.3s;
+      font-weight: 800;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #ffffff 0%, #ffeaf5 35%, #d9f7ff 100%);
+      color: #4a1e66;
+      padding: 14px 22px;
+      min-width: 220px;
+      box-shadow: 0 16px 30px rgba(255,255,255,0.2);
+    }
+
+    .secondary-btn {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 12px 18px;
+      min-width: 200px;
     }
 
     button:hover {
-      background: #ff0080;
-      color: #fff;
-      transform: scale(1.1);
-    }
-
-    footer {
-      position: absolute;
-      bottom: 15px;
-      opacity: 0.8;
-      font-size: 0.9rem;
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 20px 30px rgba(19, 5, 33, 0.2);
     }
 
     .lock-message {
-      margin-top: 18px;
-      background: rgba(255,255,255,0.2);
-      padding: 12px 18px;
-      border-radius: 12px;
-      backdrop-filter: blur(5px);
+      position: relative;
+      z-index: 1;
+      margin: 20px auto 0;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 12px 16px;
+      border-radius: 16px;
+      max-width: 320px;
+      line-height: 1.7;
       display: none;
       animation: fadeIn 0.5s ease;
-      max-width: 300px;
+      color: #fff;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      opacity: 0.82;
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes gradientMove {
@@ -92,129 +199,99 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(-20px) translateX(18px); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      50% { transform: translateY(22px) translateX(-10px); }
+    }
+
+    @media (max-width: 560px) {
+      .card {
+        padding: 28px 18px 22px;
+      }
+
+      .actions {
+        gap: 12px;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 100%;
+        min-width: 0;
+      }
+    }
   </style>
 </head>
-
 <body>
+  <main class="page">
+    <section class="card">
+      <h1>Day 1: Compliment Generator ✨</h1>
+      <p class="subtitle">Click the button below to get a random compliment, Khizar!</p>
 
-  <h1>Day 1: Compliment Generator ✨</h1>
+      <div id="compliment">💬 Your compliments will appear here 💬</div>
 
-  <p>Click the button below to get a random compliment, Khizar!</p>
+      <div class="actions">
+        <button class="primary-btn" onclick="generateCompliment()">Get Compliment 💛</button>
+        <button class="secondary-btn" onclick="nextDay()">Go to Day 2 ➜</button>
+      </div>
 
-  <div id="compliment">
-    💬 Your compliments will appear here 💬
-  </div>
-
-  <button onclick="generateCompliment()">
-    Get Compliment 💛
-  </button>
-
-  <button style="margin-top:20px;" onclick="nextDay()">
-    Go to Day 2 ➜
-  </button>
-
-  <div class="lock-message" id="lockMessage"></div>
-
-  <footer>
-    Created with ♥️ by Shahid 🧸
-  </footer>
+      <div class="lock-message" id="lockMessage"></div>
+      <footer>Created with ♥️ by Shahid 🧸</footer>
+    </section>
+  </main>
 
   <script>
-
     const compliments = [
-
       "1. You love to annoying me but you are special for Me ! ✨",
-
       "2. You’ve got the kind of smile that can fix my bad mood 😊",
-
       "3. Khizar, you’re seriously one of a kind 💫",
-
       "4. Your friendship is for me it's a pure gold 🧡",
-
       "5. You make everything more fun just by being there 🎉",
-
       "6. You know me better than the rest",
-
       "7. You have a heart that shines brighter than any one 💗",
-
       "8. You’re awesome — no updates required 💻",
-
       "9. Never forget — you’re genuinely special for me forever 🧡",
-
       "10. In the World full of selfishness, you are a true Gem 💎",
-
       "11. Your positivity is infectious and uplifting 🌟",
       "12. Teri jo Baatein hai wo mujhe achhi lagti 😁",
-    "13. Aap jaisa Insaan, Mast hai 🤗",
+      "13. Aap jaisa Insaan, Mast hai 🤗",
       "14. Aap Behaag, Behisab, Bemisaal Hoo 🤩",
       "15. Your the one of the best Listener 💕"
-
     ];
 
     function generateCompliment() {
-
-      const randomIndex =
-        Math.floor(Math.random() * compliments.length);
-
-      const complimentBox =
-        document.getElementById("compliment");
-
+      const randomIndex = Math.floor(Math.random() * compliments.length);
+      const complimentBox = document.getElementById("compliment");
       complimentBox.style.opacity = 0;
 
       setTimeout(() => {
-
-        complimentBox.innerHTML =
-          compliments[randomIndex];
-
+        complimentBox.innerHTML = compliments[randomIndex];
         complimentBox.style.opacity = 1;
-
       }, 300);
     }
 
-    /* =========================
-       DATE LOCK FOR DAY 2
-    ========================= */
-
     function nextDay() {
-
-      // Unlock Date = 24 May 2026
-      const unlockDate =
-        new Date("2026-05-25T00:00:00");
-
+      const unlockDate = new Date("2026-05-25T00:00:00");
       const now = new Date();
-
-      const lockMessage =
-        document.getElementById("lockMessage");
+      const lockMessage = document.getElementById("lockMessage");
 
       if (now >= unlockDate) {
-
-        // Open Day 2
         window.location.href = "day2.html";
-
       } else {
-
-        // Remaining Time
         const diff = unlockDate - now;
-
-        const days =
-          Math.floor(diff / (1000 * 60 * 60 * 24));
-
-        const hours =
-          Math.floor((diff / (1000 * 60 * 60)) % 24);
-
-        const minutes =
-          Math.floor((diff / (1000 * 60)) % 60);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
 
         lockMessage.style.display = "block";
-
-        lockMessage.innerHTML = `
-          🔒 Day 2 is locked 💛 <br><br>
-          Opens in <b>${days}d ${hours}h ${minutes}m</b>
-        `;
+        lockMessage.innerHTML = `🔒 Day 2 is locked 💛 <br><br>Opens in <b>${days}d ${hours}h ${minutes}m</b>`;
       }
     }
-
   </script>
-
 </body>
 </html>
